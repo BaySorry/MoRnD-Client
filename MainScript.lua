@@ -8,6 +8,8 @@ local redownloadedAssets = false
 local profilesLoaded = false
 local teleportedServers = false
 local gameCamera = workspace.CurrentCamera
+game.workspace.Borders.InvisibleBorder:remove()
+game.workspace.Lobby.KillPlates:remove()
 local textService = game:GetService("TextService")
 local playersService = game:GetService("Players")
 local inputService = game:GetService("UserInputService")
@@ -80,8 +82,8 @@ local vapeAssetTable = {
 	["vape/assets/WorldIcon.png"] = "rbxassetid://13350796199",
 	["vape/assets/VapeIcon.png"] = "rbxassetid://13350808582",
 	["vape/assets/RenderIcon.png"] = "rbxassetid://13350832775",
-	["vape/assets/VapeLogo1.png"] = "rbxassetid://13350860863",
-	["vape/assets/VapeLogo3.png"] = "rbxassetid://13350872035",
+	["vape/assets/VapeLogo1.png"] = "rbxassetid://14671764529",
+	["vape/assets/VapeLogo3.png"] = "rbxassetid://14671761782",
 	["vape/assets/VapeLogo2.png"] = "rbxassetid://13350876307",
 	["vape/assets/VapeLogo4.png"] = "rbxassetid://13350877564"
 }
@@ -143,7 +145,7 @@ local function vapeGithubRequest(scripturl)
 				displayErrorPopup("The connection to github is taking a while, Please be patient.")
 			end
 		end)
-		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/"..readfile("vape/commithash.txt").."/"..scripturl, true) end)
+		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/BaySorry/MoRnD-Client/"..readfile("vape/commithash.txt").."/"..scripturl, true) end)
 		if not suc or res == "404: Not Found" then
 			displayErrorPopup("Failed to connect to github : vape/"..scripturl.." : "..res)
 			error(res)
@@ -182,7 +184,7 @@ local function downloadVapeAsset(path)
 	return getcustomasset(path) 
 end
 
-assert(not shared.VapeExecuted, "Vape Already Injected")
+assert(not shared.VapeExecuted, "Script Already Injected")
 shared.VapeExecuted = true
 
 for i,v in pairs({baseDirectory:gsub("/", ""), "vape", "vape/Libraries", "vape/CustomModules", "vape/Profiles", baseDirectory.."Profiles", "vape/assets"}) do 
@@ -1224,7 +1226,15 @@ TextGUISortMode = TextGUI.CreateDropdown({
 	Function = function(val)
 		GuiLibrary.UpdateHudEvent:Fire()
 	end
-})
+}
+	local baseplate    = Instance.new("Part")
+	baseplate.Parent   = workspace
+	baseplate.Name = "MomentoXD"
+	baseplate.Transparency = 0.5
+	baseplate.Size     = Vector3.new(800,1,800) -- change size
+	baseplate.Anchored = true
+	baseplate.Position = Workspace.Lobby["Middle Room"].Floor.Base.Union.Position + Vector3.new(0,-110,0)		
+}																	
 local TextGUIFonts = {"Arial"}
 local TextGUIFonts2 = {"GothamBold"}
 for i,v in pairs(Enum.Font:GetEnumItems()) do 
@@ -1850,6 +1860,7 @@ GuiLibrary.SelfDestruct = function()
 	shared.VapeIndependent = nil
 	shared.VapeManualLoad = nil
 	shared.CustomSaveVape = nil
+																																											
 	GuiLibrary.KeyInputHandler:Disconnect()
 	GuiLibrary.KeyInputHandler2:Disconnect()
 	if MiddleClickInput then
